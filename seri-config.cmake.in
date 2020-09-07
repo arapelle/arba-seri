@@ -1,0 +1,10 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+find_dependency(core 0.3.0)
+
+include(${CMAKE_CURRENT_LIST_DIR}/seri.cmake)
+check_required_components(seri)
+
+message(STATUS "Found package @PROJECT_NAME@ @PROJECT_VERSION@")
+

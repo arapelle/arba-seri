@@ -1,4 +1,4 @@
-#include "polymorphic_classes.hpp"
+#include "classes.hpp"
 #include <seri/polymorphism.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
@@ -23,17 +23,17 @@ TEST(seri_tests, test_make_shared)
 TEST(seri_tests, test_serializable_type_id_from_base_ref)
 {
     std::unique_ptr<Object> object = std::make_unique<Colored_polygon>(5, "blue");
-    seri::uutid object_stid = seri::serializable_type_id(*object);
-    ASSERT_TRUE(!object_stid.is_nil());
-    ASSERT_EQ(object_stid, seri::serializable_type_id<Colored_polygon>());
+    seri::uutid object_uutid = seri::serializable_type_id(*object);
+    ASSERT_TRUE(!object_uutid.is_nil());
+    ASSERT_EQ(object_uutid, seri::serializable_type_id<Colored_polygon>());
 }
 
 TEST(seri_tests, test_serializable_type_id_from_derived_ref)
 {
     std::unique_ptr<Colored_polygon> object = std::make_unique<Colored_polygon>(4, "green");
-    seri::uutid object_stid = seri::serializable_type_id(*object);
-    ASSERT_TRUE(!object_stid.is_nil());
-    ASSERT_EQ(object_stid, seri::serializable_type_id<Colored_polygon>());
+    seri::uutid object_uutid = seri::serializable_type_id(*object);
+    ASSERT_TRUE(!object_uutid.is_nil());
+    ASSERT_EQ(object_uutid, seri::serializable_type_id<Colored_polygon>());
 }
 
 int main(int argc, char** argv)

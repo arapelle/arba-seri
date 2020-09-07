@@ -1,41 +1,64 @@
 #pragma once 
 
 #include <core/uuid.hpp>
-#include "archive/archive_base.hpp"
+#include <sstream>
+#include <string>
 #include <typeindex>
 #include <functional>
-#include <iostream>
 #include <memory>
-#include <string>
-#include <sstream>
 
 namespace seri
 {
+/**
+ * \brief Universal Unique Type ID
+ */
 using uutid = core::uuid;
 
-template <typename type>
-const uutid& serializable_type_id();
+// Constant to specialize for each polymorphic serializable type (cf. Helper macros):
 
 template <typename type>
 inline constexpr bool has_serializable_type_id_v = false;
 
-class serializable_types final
+// Polymorphic serializable type concepts:
+
+template <typename type>
+concept abstract_polymorphic_serializable_type =
+        std::has_virtual_destructor_v<type>
+        && std::is_abstract_v<type>
+        && (!has_serializable_type_id_v<type>);
+
+template <typename type>
+concept concrete_polymorphic_serializable_type =
+        std::has_virtual_destructor_v<type>
+        && (!std::is_abstract_v<type>)
+        && has_serializable_type_id_v<type>;
+
+// Function to specialize for each polymorphic serializable type (cf. Helper macros):
+
+template <typename type>
+requires concrete_polymorphic_serializable_type<type>
+const uutid& serializable_type_id();
+
+//-----
+
+class concrete_polymorphic_serializable_types final
 {
 private:
+    ~concrete_polymorphic_serializable_types() = delete;
+
     using types_register = std::unordered_map<std::type_index, uutid>;
 
-    static types_register& serializable_types_register()
+    static types_register& global_types_register()
     {
         static types_register global_register;
         return global_register;
     }
 
-public:
     template <typename type>
-    requires std::has_virtual_destructor_v<type> && has_serializable_type_id_v<type> && (!std::is_abstract_v<type>)
+    requires concrete_polymorphic_serializable_type<type>
     static void register_type()
     {
-        auto res = serializable_types_register().try_emplace(typeid(type), serializable_type_id<type>());
+        auto res = global_types_register().try_emplace(typeid(type), serializable_type_id<type>());
         if (!res.second)
         {
             std::ostringstream stream;
@@ -44,140 +67,92 @@ public:
         }
     }
 
+    template <typename base, typename derived>
+    requires concrete_polymorphic_serializable_type<derived>
+    friend class inheritance_relation;
+
     template <typename type>
+    requires abstract_polymorphic_serializable_type<type> || concrete_polymorphic_serializable_type<type>
     friend uutid serializable_type_id(const type& value);
 };
 
 template <typename type>
+requires abstract_polymorphic_serializable_type<type> || concrete_polymorphic_serializable_type<type>
 inline uutid serializable_type_id(const type& value)
 {
-    auto iter = serializable_types::serializable_types_register().find(typeid(value));
-    if (iter != serializable_types::serializable_types_register().end())
+    auto iter = concrete_polymorphic_serializable_types::global_types_register().find(typeid(value));
+    if (iter != concrete_polymorphic_serializable_types::global_types_register().end())
         return iter->second;
     std::ostringstream stream;
     stream << "Type is not registered as a serializable type: " << typeid(type).name() << ".";
     throw std::runtime_error(stream.str());
 }
 
-/**/
 template <typename base>
-class io_functions_base_register
-{
-public:
-    using read_function = void(*)(iarchive&, base&);
-    using write_function = void(*)(oarchive&, const base&);
-    using read_functions_register = std::unordered_map<uutid, read_function>;
-    using write_functions_register = std::unordered_map<std::type_index, write_function>;
-
-    inline static read_functions_register& get_read_functions_register()
-    {
-        static read_functions_register global_register;
-        return global_register;
-    }
-
-    inline static write_functions_register& get_write_functions_register()
-    {
-        static write_functions_register global_register;
-        return global_register;
-    }
-
-public:
-    template <typename derived>
-    static void register_derived(read_function read_fn, write_function write_fn)
-    {
-        get_read_functions_register().emplace(serializable_type_id<derived>(), read_fn);
-        get_write_functions_register().emplace(typeid(derived), write_fn);
-    }
-
-    static void read_instance(iarchive& archive, base& value, const uutid& id)
-    {
-        auto read_fn = get_read_functions_register().at(id);
-        read_fn(archive, value);
-    }
-
-    static void write_instance(oarchive& archive, base& value, const std::type_index& id)
-    {
-        auto write_fn = get_write_functions_register().at(id);
-        write_fn(archive, value);
-    }
-};
-/**/
-
-template <typename base>
-requires std::has_virtual_destructor_v<base> && (std::is_abstract_v<base> || has_serializable_type_id_v<base>)
+requires abstract_polymorphic_serializable_type<base> || concrete_polymorphic_serializable_type<base>
 class inheritance_relation_base
 {
 protected:
     using clone_function = base*(*)();
-    using base_register = std::unordered_map<uutid, clone_function>;
+    using clone_functions_register = std::unordered_map<uutid, clone_function>;
 
 private:
     static base* null_clone() { return nullptr; }
 
-    static auto create_base_register()
+    static clone_functions_register create_clone_functions_register()
     {
-        std::unordered_map<uutid, clone_function> base_register;
-        base_register.emplace(uutid(), &null_clone);
-        return base_register;
+        clone_functions_register functions_register;
+        functions_register.emplace(uutid(), &null_clone);
+        return functions_register;
     }
 
 protected:
-    static base_register& get_base_register()
+    static clone_functions_register& global_clone_functions_register()
     {
-        static std::unordered_map<uutid, clone_function> global_base_register = create_base_register();
-        return global_base_register;
+        static clone_functions_register functions_register = create_clone_functions_register();
+        return functions_register;
     }
 
 public:
     static base* make_instance(const uutid& id)
     {
-        return get_base_register().at(id)();
+        return global_clone_functions_register().at(id)();
     }
 };
 
 template <typename base, typename derived>
-requires (!std::is_abstract_v<derived>) && std::has_virtual_destructor_v<derived>
+requires concrete_polymorphic_serializable_type<derived>
 class inheritance_relation final : public inheritance_relation_base<base>
 {
-    using base_register = typename inheritance_relation_base<base>::base_register;
+    using clone_functions_register = typename inheritance_relation_base<base>::clone_functions_register;
 
     struct dummy final {};
     ~inheritance_relation() = delete;
 
     static base* clone() { return new derived(); }
 
-    static void read_binary_(iarchive& stream, base& value)
-    {
-//        if constexpr(!std::is_same_v<base, derived>)
-//            read_binary(stream, dynamic_cast<derived&>(value));
-    }
-
-    static void write_binary_(oarchive& stream, const base& value)
-    {
-//        if constexpr(!std::is_same_v<base, derived>)
-//            write_binary(stream, dynamic_cast<const derived&>(value));
-    }
-
     inline static dummy register_base_derived_relation_()
     {
         if constexpr(std::is_same_v<base, derived>)
-            serializable_types::register_type<derived>();
-        base_register& b_register = inheritance_relation_base<base>::get_base_register();
-        auto res = b_register.try_emplace(serializable_type_id<derived>(), &clone);
-        if (!res.second)
+            concrete_polymorphic_serializable_types::register_type<derived>();
+
+        clone_functions_register& functions_register = inheritance_relation_base<base>::global_clone_functions_register();
+        auto emplace_res = functions_register.try_emplace(serializable_type_id<derived>(), &clone);
+        if (!emplace_res.second)
         {
             std::ostringstream stream;
             stream << "Serializable type id is already associated with a type: " << serializable_type_id<derived>() << ".";
             throw std::runtime_error(stream.str());
         }
-        if constexpr(!std::is_same_v<base, derived>)
-            io_functions_base_register<base>::template register_derived<derived>(&read_binary_, &write_binary_);
+
         return dummy{};
     }
     inline static dummy auto_init_ = register_base_derived_relation_();
 };
 
-#define SERI_DEFINE_TYPE_ID(type, id) \
+// Helper macros:
+
+#define SERI_DEFINE_SERIALIZABLE_TYPE_ID(type, id) \
     namespace seri \
     { \
     template <> \
@@ -192,6 +167,8 @@ class inheritance_relation final : public inheritance_relation_base<base>
     { \
     template class inheritance_relation<base, derived>; \
     }
+
+// Helper make functions:
 
 template <typename base>
 base* make_instance(const uutid& id)
@@ -210,16 +187,4 @@ std::shared_ptr<base> make_shared(const uutid& id)
 {
     return std::shared_ptr<base>(make_instance<base>(id));
 }
-
-template <typename input_stream, typename type>
-concept input_serializable_functor = requires(input_stream& istream, type& ref)
-{
-    { ref.read_binary(istream) };
-};
-
-template <typename output_stream, typename type>
-concept output_serializable_functor = requires(output_stream& ostream, const type& cref)
-{
-    { cref.write_binary(ostream) };
-};
 }

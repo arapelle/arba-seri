@@ -16,8 +16,8 @@ set_build_type_if_undefined()
 
 project(seri
         VERSION 0.1.0
-#        DESCRIPTION ""
-#        HOMEPAGE_URL ""
+        DESCRIPTION "Portable serialization C++ library."
+        HOMEPAGE_URL "https://github.com/arapelle/seri"
         LANGUAGES CXX)
 
 message(STATUS "BUILD   : ${CMAKE_BUILD_TYPE}")
@@ -32,17 +32,17 @@ library_build_options(${PROJECT_NAME} STATIC SHARED EXAMPLE TEST)
 
 # Headers:
 set(headers
+include/seri/serializable_object.hpp
 include/seri/polymorphism.hpp
-include/seri/binary/binary_io.hpp
+include/seri/binary/io.hpp
 include/seri/binary/read_binary.hpp
 include/seri/binary/write_binary.hpp
-include/seri/archive/binary_archive.hpp
-include/seri/archive/archive_base.hpp
 )
 
 # Sources:
 set(sources
-src/seri.cpp
+src/binary/read_binary.cpp
+src/binary/write_binary.cpp
 )
 
 # Add C++ library
@@ -75,7 +75,7 @@ install_cpp_library_targets(${PROJECT_NAME}
 
 # Install package
 install_package(${PROJECT_NAME}
-                VERBOSE_PACKAGE_CONFIG_FILE
+                INPUT_PACKAGE_CONFIG_FILE ${PROJECT_NAME}-config.cmake.in
                 EXPORT_NAMES ${PROJECT_NAME})
 
 if(${PROJECT_NAME}_BUILD_EXAMPLES)

@@ -1,3 +1,6 @@
 add_cpp_library_examples(SHARED ${PROJECT_NAME}
                          STATIC ${PROJECT_NAME}-static
-                         SOURCES seri_example.cpp)
+                         SOURCES
+                            string_example.cpp
+                            polymorphic_example.cpp
+                         )
