@@ -6,6 +6,6 @@ add_executable(${PROJECT_NAME} main.cpp)
 # Find package seri:
 find_package(seri 0.1.1 CONFIG REQUIRED)
 # Use seri release shared target:
-target_link_libraries(${PROJECT_NAME} PRIVATE seri::seri)
+target_link_libraries(${PROJECT_NAME} PRIVATE arba::seri)
 # Use seri release static target:
-#target_link_libraries(${PROJECT_NAME} PRIVATE seri::seri-static)
+#target_link_libraries(${PROJECT_NAME} PRIVATE arba::seri-static)

@@ -49,6 +49,7 @@ src/binary/write_binary.cpp
 add_cpp_library(${PROJECT_NAME} ${PROJECT_NAME}_BUILD_SHARED_LIB ${PROJECT_NAME}_BUILD_STATIC_LIB
     SHARED ${PROJECT_NAME}
     STATIC ${PROJECT_NAME}-static
+    NAMESPACE arba::
     CXX_STANDARD 20
     INCLUDE_DIRECTORIES include
     OUTPUT_VERSION_HEADER "version.hpp"
@@ -67,7 +68,7 @@ cpp_library_targets_link_libraries(${PROJECT_NAME} PUBLIC arba::core)
 install_cpp_library_targets(${PROJECT_NAME}
                             TARGETS ${project_targets}
                             INCLUDE_DIRECTORIES "include/${PROJECT_NAME}"
-                            NAMESPACE ${PROJECT_NAME}::
+                            NAMESPACE arba::
                             )
 
 # Install package
