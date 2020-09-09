@@ -15,7 +15,7 @@ set_build_type_if_undefined()
 # C++ PROJECT
 
 project(seri
-        VERSION 0.1.0
+        VERSION 0.1.1
         DESCRIPTION "Portable serialization C++ library."
         HOMEPAGE_URL "https://github.com/arapelle/seri"
         LANGUAGES CXX)
@@ -49,6 +49,7 @@ src/binary/write_binary.cpp
 add_cpp_library(${PROJECT_NAME} ${PROJECT_NAME}_BUILD_SHARED_LIB ${PROJECT_NAME}_BUILD_STATIC_LIB
     SHARED ${PROJECT_NAME}
     STATIC ${PROJECT_NAME}-static
+    NAMESPACE arba::
     CXX_STANDARD 20
     INCLUDE_DIRECTORIES include
     OUTPUT_VERSION_HEADER "version.hpp"
@@ -57,20 +58,17 @@ add_cpp_library(${PROJECT_NAME} ${PROJECT_NAME}_BUILD_SHARED_LIB ${PROJECT_NAME}
     BUILT_TARGETS project_targets
     )
 
-set(core_target core)
-if(NOT TARGET core)
-    string(PREPEND core_target core::)
-    find_package(core 0.3.0 REQUIRED CONFIG)
+# Link targets
+if(NOT TARGET arba::core)
+    find_package(core 0.3.1 REQUIRED CONFIG)
 endif()
-foreach(target ${project_targets})
-    target_link_libraries(${target} PUBLIC ${core_target})
-endforeach()
+cpp_library_targets_link_libraries(${PROJECT_NAME} PUBLIC arba::core)
 
 # Install C++ library
 install_cpp_library_targets(${PROJECT_NAME}
                             TARGETS ${project_targets}
                             INCLUDE_DIRECTORIES "include/${PROJECT_NAME}"
-                            NAMESPACE ${PROJECT_NAME}::
+                            NAMESPACE arba::
                             )
 
 # Install package
