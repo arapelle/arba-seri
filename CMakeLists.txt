@@ -15,7 +15,7 @@ set_build_type_if_undefined()
 # C++ PROJECT
 
 project(seri
-        VERSION 0.1.1
+        VERSION 0.1.2
         DESCRIPTION "Portable serialization C++ library."
         HOMEPAGE_URL "https://github.com/arapelle/seri"
         LANGUAGES CXX)
