@@ -14,6 +14,16 @@ TEST(binary_io_tests, test_read_write_std_string)
     ASSERT_EQ(value, stream_value);
 }
 
+TEST(binary_io_tests, test_read_write_std_u8string)
+{
+    std::u8string value(u8"Hello¶!");
+    std::u8string stream_value(u8"?");
+    std::stringstream stream(std::ios::binary|std::ios::in|std::ios::out);
+    seri::write_binary(stream, value);
+    seri::read_binary(stream, stream_value);
+    ASSERT_TRUE(value == stream_value);
+}
+
 //TEST(binary_io_tests, test_read_write_std_u16string)
 //{
 //    std::u16string value(u"Hello!\nHow are you?");
