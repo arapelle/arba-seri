@@ -109,8 +109,9 @@ inline input_stream& read_binary(input_stream& stream, T& value)
 }
 
 // 3
-template <typename input_stream>
-inline input_stream& read_binary(input_stream& stream, std::string& value)
+template <typename input_stream, typename T>
+requires (sizeof(T) == 1) && (std::is_convertible_v<uint8_t, T> || std::is_enum_v<T>)
+inline input_stream& read_binary(input_stream& stream, std::basic_string<T>& value)
 {
     uint64_t str_size = 0;
     read_binary(stream, str_size);

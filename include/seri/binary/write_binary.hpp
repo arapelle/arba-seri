@@ -78,8 +78,9 @@ inline output_stream& write_binary(output_stream& stream, const T& value)
 }
 
 // 3
-template <typename output_stream>
-inline output_stream& write_binary(output_stream& stream, const std::string& value)
+template <typename output_stream, typename T>
+requires (sizeof(T) == 1) && (std::is_convertible_v<uint8_t, T> || std::is_enum_v<T>)
+inline output_stream& write_binary(output_stream& stream, const std::basic_string<T>& value)
 {
     uint64_t str_size = value.length();
     write_binary(stream, str_size);
