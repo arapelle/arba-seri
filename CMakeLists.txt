@@ -15,7 +15,7 @@ set_build_type_if_undefined()
 # C++ PROJECT
 
 project(seri
-        VERSION 0.2
+        VERSION 0.2.1
         DESCRIPTION "Portable serialization C++ library."
         HOMEPAGE_URL "https://github.com/arapelle/seri"
         LANGUAGES CXX)
@@ -60,7 +60,7 @@ add_cpp_library(${PROJECT_NAME} ${PROJECT_NAME}_BUILD_SHARED_LIB ${PROJECT_NAME}
 
 # Link targets
 if(NOT TARGET arba::core)
-    find_package(core 0.3.2 REQUIRED CONFIG)
+    find_package(core 0.9 REQUIRED CONFIG)
 endif()
 cpp_library_targets_link_libraries(${PROJECT_NAME} PUBLIC arba::core)
 

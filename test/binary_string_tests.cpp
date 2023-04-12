@@ -16,7 +16,8 @@ TEST(binary_io_tests, test_read_write_std_string)
 
 TEST(binary_io_tests, test_read_write_std_u8string)
 {
-    std::u8string value(u8"Hello¶!");
+    std::u8string value(u8"Hello¶ぁ中!");
+    ASSERT_EQ(value.size(), 14);
     std::u8string stream_value(u8"?");
     std::stringstream stream(std::ios::binary|std::ios::in|std::ios::out);
     seri::write_binary(stream, value);
