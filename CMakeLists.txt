@@ -15,7 +15,7 @@ set_build_type_if_undefined()
 # C++ PROJECT
 
 set(PROJECT_NAME "seri")
-set(PROJECT_VERSION 0.2.2)
+set(PROJECT_VERSION 0.2.3)
 
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
