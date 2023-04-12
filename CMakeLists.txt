@@ -63,7 +63,7 @@ add_cpp_library(${PROJECT_NAME} ${PROJECT_NAME}_BUILD_SHARED_LIB ${PROJECT_NAME}
 
 # Link targets
 if(NOT TARGET arba::core)
-    find_package(core 0.9 REQUIRED CONFIG)
+    find_package(core 0.10 REQUIRED CONFIG)
 endif()
 cpp_library_targets_link_libraries(${PROJECT_NAME} PUBLIC arba::core)
 

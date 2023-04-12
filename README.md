@@ -15,7 +15,7 @@ Binaries:
 
 Libraries:
 
-- [core](https://github.com/arapelle/core) 0.9 or later
+- [core](https://github.com/arapelle/core) 0.10 or later
 - [Google Test](https://github.com/google/googletest) 1.10 or later (only for testing)
 
 ## Clone
