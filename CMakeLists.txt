@@ -49,13 +49,13 @@ set(sources
 
 ## Add C++ library:
 add_cpp_library(
-  SHARED ${PROJECT_NAME}
-  STATIC ${PROJECT_NAME}-static
-  BUILD_SHARED OPTION
-  BUILD_STATIC OPTION
-  HEADERS ${headers} ${generated_version_header}
-  SOURCES ${sources}
-  CXX_STANDARD 20
+    SHARED ${PROJECT_NAME}
+    STATIC ${PROJECT_NAME}-static
+    BUILD_SHARED OPTION
+    BUILD_STATIC OPTION
+    HEADERS ${headers} ${generated_version_header}
+    SOURCES ${sources}
+    CXX_STANDARD 20
 )
 
 ## Link C++ targets:
@@ -63,21 +63,21 @@ if(NOT TARGET arba-core)
     find_package(arba-core 0.14 REQUIRED CONFIG)
 endif()
 cpp_library_link_libraries(
-  SHARED ${PROJECT_NAME}
-  STATIC ${PROJECT_NAME}-static
-  PUBLIC arba-core
+    SHARED ${PROJECT_NAME}
+    STATIC ${PROJECT_NAME}-static
+    PUBLIC arba-core
 )
 
 ## Install C++ library:
 install_cpp_library(
-  SHARED ${PROJECT_NAME}
-  STATIC ${PROJECT_NAME}-static
-  EXPORT ${PROJECT_NAME}-targets
+    SHARED ${PROJECT_NAME}
+    STATIC ${PROJECT_NAME}-static
+    EXPORT ${PROJECT_NAME}-targets
 )
 
 ## Install project package
 install_library_package(${PROJECT_NAME}
-                        INPUT_PACKAGE_CONFIG_FILE cmake/config/package-config.cmake.in
+    INPUT_PACKAGE_CONFIG_FILE cmake/config/package-config.cmake.in
 )
 install_uninstall_script(${PROJECT_NAME} FILENAME uninstall.cmake)
 
