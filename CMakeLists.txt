@@ -77,9 +77,9 @@ install_cpp_library(
 
 ## Install project package
 install_library_package(${PROJECT_NAME}
-                        INPUT_PACKAGE_CONFIG_FILE CMake-package-config.cmake.in
+                        INPUT_PACKAGE_CONFIG_FILE cmake/config/package-config.cmake.in
 )
-install_uninstall_script(${PROJECT_NAME})
+install_uninstall_script(${PROJECT_NAME} FILENAME uninstall.cmake)
 
 ## Add examples:
 option_or_set_ifdef(BUILD_${PROJECT_NAME}_EXAMPLES "Build ${PROJECT_NAME} examples or not" OFF BUILD_arba-arba_EXAMPLES)
