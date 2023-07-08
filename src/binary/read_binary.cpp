@@ -1,4 +1,4 @@
-#include <seri/binary/read_binary.hpp>
+#include <arba/seri/binary/read_binary.hpp>
 #include <istream>
 
 namespace seri

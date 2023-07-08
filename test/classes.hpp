@@ -1,6 +1,6 @@
 #pragma once
 
-#include <seri/binary/io.hpp>
+#include <arba/seri/binary/io.hpp>
 #include <string_view>
 
 class Object

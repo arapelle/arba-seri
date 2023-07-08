@@ -1,4 +1,4 @@
-#include <seri/binary/write_binary.hpp>
+#include <arba/seri/binary/write_binary.hpp>
 #include <ostream>
 
 namespace seri

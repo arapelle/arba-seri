@@ -1,5 +1,5 @@
 #include <iostream>
-#include <seri/binary/io.hpp>
+#include <arba/seri/binary/io.hpp>
 
 int main()
 {

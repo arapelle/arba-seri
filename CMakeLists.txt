@@ -34,17 +34,17 @@ generate_version_macro_header(generated_version_header
 
 ## Headers:
 set(headers
-include/seri/serializable_object.hpp
-include/seri/polymorphism.hpp
-include/seri/binary/io.hpp
-include/seri/binary/read_binary.hpp
-include/seri/binary/write_binary.hpp
+    include/arba/seri/serializable_object.hpp
+    include/arba/seri/polymorphism.hpp
+    include/arba/seri/binary/io.hpp
+    include/arba/seri/binary/write_binary.hpp
+    include/arba/seri/binary/read_binary.hpp
 )
 
 ## Sources:
 set(sources
-src/binary/read_binary.cpp
-src/binary/write_binary.cpp
+    src/binary/read_binary.cpp
+    src/binary/write_binary.cpp
 )
 
 ## Add C++ library:
