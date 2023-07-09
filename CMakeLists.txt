@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.26)
 
 # CMAKE INCLUDES
 
@@ -15,7 +15,7 @@ set_build_type_ifndef()
 
 set(PROJECT_NAME "arba-seri")
 set(project_namespace "arba")
-set(project_feature_name "seri")
+set(project_base_name "seri")
 set(PROJECT_VERSION 0.4.0)
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
@@ -29,8 +29,8 @@ include(CTest)
 
 ## Generated/Configured headers:
 generate_version_macro_header(generated_version_header
-                              ${project_namespace}_${project_feature_name}
-                              ${project_namespace}/${project_feature_name}/version.hpp)
+                              ${project_namespace}_${project_base_name}
+                              ${project_namespace}/${project_base_name}/version.hpp)
 
 ## Headers:
 set(headers
@@ -76,9 +76,7 @@ install_cpp_library(
 )
 
 ## Install project package
-install_library_package(${PROJECT_NAME}
-    INPUT_PACKAGE_CONFIG_FILE cmake/config/package-config.cmake.in
-)
+install_library_package(${PROJECT_NAME} INPUT_PACKAGE_CONFIG_FILE cmake/config/package-config.cmake.in)
 install_uninstall_script(${PROJECT_NAME} FILENAME uninstall.cmake)
 
 ## Add examples:

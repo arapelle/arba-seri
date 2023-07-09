@@ -1,4 +1,5 @@
 #include <iostream>
+#include <arba/seri/version.hpp>
 #include <arba/seri/binary/io.hpp>
 
 int main()
