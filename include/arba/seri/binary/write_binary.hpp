@@ -8,8 +8,11 @@
 #include <sstream>
 #include <cstdint>
 
+inline namespace arba
+{
 namespace seri
 {
+
 std::ostream& write_bytes(std::ostream& stream, const void* data, std::size_t number_of_bytes_to_write);
 
 //-----
@@ -192,5 +195,7 @@ output_stream& write_binary(output_stream& stream, const std::shared_ptr<type>& 
     if (value)
         write_binary(stream, *value);
     return stream;
+}
+
 }
 }
