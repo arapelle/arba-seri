@@ -13,7 +13,7 @@ Binaries:
 
 Libraries:
 
-- [core](https://github.com/arapelle/core) 0.14
+- [core](https://github.com/arapelle/core) 0.14.0
 
 Testing Libraries (optional):
 

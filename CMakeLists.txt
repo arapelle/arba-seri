@@ -60,7 +60,7 @@ add_cpp_library(
 
 ## Link C++ targets:
 if(NOT TARGET arba-core)
-    find_package(arba-core 0.14 REQUIRED CONFIG)
+    find_package(arba-core 0.14.0 REQUIRED CONFIG)
 endif()
 cpp_library_link_libraries(
     SHARED ${PROJECT_NAME}
