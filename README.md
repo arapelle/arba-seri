@@ -146,4 +146,4 @@ See *basic_cmake_project* in example, and more specifically the *CMakeLists.txt*
 
 # License
 
-[MIT License](https://github.com/arapelle/seri/blob/master/LICENSE.md) © seri
+[MIT License](./LICENSE.md) © seri
