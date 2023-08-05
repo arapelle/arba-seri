@@ -1,4 +1,4 @@
-#include <seri/binary/io.hpp>
+#include <arba/seri/binary/io.hpp>
 #include <gtest/gtest.h>
 #include <sstream>
 #include <cstdlib>
@@ -9,7 +9,7 @@ enum class enum_i8 : int8_t
     VALUE = 6,
 };
 
-TEST(binary_io_tests, test_read_write_bool)
+TEST(binary_signed_integral_tests, test_read_write_bool)
 {
     bool value = true;
     bool stream_value = false;
@@ -19,7 +19,7 @@ TEST(binary_io_tests, test_read_write_bool)
     ASSERT_EQ(value, stream_value);
 }
 
-TEST(binary_io_tests, test_read_write_i8)
+TEST(binary_signed_integral_tests, test_read_write_i8)
 {
     int8_t value = -4;
     int8_t stream_value = 0;
@@ -29,7 +29,7 @@ TEST(binary_io_tests, test_read_write_i8)
     ASSERT_EQ(value, stream_value);
 }
 
-TEST(binary_io_tests, test_read_write_ei8)
+TEST(binary_signed_integral_tests, test_read_write_ei8)
 {
     enum_i8 value = enum_i8::VALUE;
     enum_i8 stream_value = enum_i8::DEFAULT;
@@ -39,7 +39,7 @@ TEST(binary_io_tests, test_read_write_ei8)
     ASSERT_EQ(value, stream_value);
 }
 
-TEST(binary_io_tests, test_read_write_i16)
+TEST(binary_signed_integral_tests, test_read_write_i16)
 {
     int16_t value = 0xaabb;
     int16_t stream_value = 0;
@@ -49,7 +49,7 @@ TEST(binary_io_tests, test_read_write_i16)
     ASSERT_EQ(value, stream_value);
 }
 
-TEST(binary_io_tests, test_read_write_i32)
+TEST(binary_signed_integral_tests, test_read_write_i32)
 {
     int32_t value = 0xaabbccdd;
     int32_t stream_value = 0;
@@ -59,7 +59,7 @@ TEST(binary_io_tests, test_read_write_i32)
     ASSERT_EQ(value, stream_value);
 }
 
-TEST(binary_io_tests, test_read_write_i64)
+TEST(binary_signed_integral_tests, test_read_write_i64)
 {
     int64_t value = static_cast<int64_t>(0xff22334455667788);
     int64_t stream_value = 0;
@@ -67,11 +67,4 @@ TEST(binary_io_tests, test_read_write_i64)
     seri::write_binary(stream, value);
     seri::read_binary(stream, stream_value);
     ASSERT_EQ(value, stream_value);
-}
-
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-
-    return RUN_ALL_TESTS();
 }

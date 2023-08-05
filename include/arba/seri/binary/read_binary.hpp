@@ -1,14 +1,17 @@
 #pragma once
 
-#include <seri/polymorphism.hpp>
-#include <seri/serializable_object.hpp>
-#include <core/htow.hpp>
+#include <arba/seri/polymorphism.hpp>
+#include <arba/seri/serializable_object.hpp>
+#include <arba/core/htow.hpp>
 #include <istream>
 #include <ostream>
 #include <ranges>
 
+inline namespace arba
+{
 namespace seri
 {
+
 std::istream& read_bytes(std::istream& stream, void* buffer, std::size_t number_of_bytes_to_read);
 
 //-----
@@ -316,5 +319,7 @@ inline input_stream& read_binary(input_stream& stream, std::shared_ptr<type>& va
     else
         value = nullptr;
     return stream;
+}
+
 }
 }

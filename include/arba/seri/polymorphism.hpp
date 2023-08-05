@@ -1,14 +1,17 @@
-#pragma once 
+#pragma once
 
-#include <core/uuid.hpp>
+#include <arba/core/uuid.hpp>
 #include <sstream>
 #include <string>
 #include <typeindex>
 #include <functional>
 #include <memory>
 
+inline namespace arba
+{
 namespace seri
 {
+
 /**
  * \brief Universal Unique Type ID
  */
@@ -186,5 +189,7 @@ template <typename base>
 std::shared_ptr<base> make_shared(const uutid& id)
 {
     return std::shared_ptr<base>(make_instance<base>(id));
+}
+
 }
 }

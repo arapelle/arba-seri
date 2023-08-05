@@ -1,10 +1,10 @@
-#include <seri/binary/io.hpp>
+#include <arba/seri/binary/io.hpp>
 #include <gtest/gtest.h>
 #include <string>
 #include <sstream>
 #include <cstdlib>
 
-TEST(binary_io_tests, test_read_write_std_string)
+TEST(binary_string_tests, test_read_write_std_string)
 {
     std::string value("Hello!\nHow are you?");
     std::string stream_value("?");
@@ -14,7 +14,7 @@ TEST(binary_io_tests, test_read_write_std_string)
     ASSERT_EQ(value, stream_value);
 }
 
-TEST(binary_io_tests, test_read_write_std_u8string)
+TEST(binary_string_tests, test_read_write_std_u8string)
 {
     std::u8string value(u8"Hello¶ぁ中!");
     ASSERT_EQ(value.size(), 14);
@@ -25,7 +25,7 @@ TEST(binary_io_tests, test_read_write_std_u8string)
     ASSERT_TRUE(value == stream_value);
 }
 
-//TEST(binary_io_tests, test_read_write_std_u16string)
+//TEST(binary_string_tests, test_read_write_std_u16string)
 //{
 //    std::u16string value(u"Hello!\nHow are you?");
 //    std::u16string stream_value(u"?");
@@ -34,10 +34,3 @@ TEST(binary_io_tests, test_read_write_std_u8string)
 //    seri::read_binary(stream, stream_value);
 //    ASSERT_EQ(value, stream_value);
 //}
-
-int main(int argc, char** argv)
-{
-    ::testing::InitGoogleTest(&argc, argv);
-
-    return RUN_ALL_TESTS();
-}

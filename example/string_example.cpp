@@ -1,5 +1,6 @@
 #include <iostream>
-#include <seri/binary/io.hpp>
+#include <arba/seri/version.hpp>
+#include <arba/seri/binary/io.hpp>
 
 int main()
 {
@@ -8,7 +9,7 @@ int main()
     std::cout << "       value: '" << value << "'" << std::endl;
     std::cout << "stream_value: '" << stream_value << "'" << std::endl;
     std::stringstream stream(std::ios::binary|std::ios::in|std::ios::out);
-    seri::write_binary(stream, value);
+    arba::seri::write_binary(stream, value);
     seri::read_binary(stream, stream_value);
     std::cout << "stream_value: '" << stream_value << "'" << std::endl;
 

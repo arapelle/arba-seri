@@ -2,26 +2,27 @@
 
 The purpose is to provide simple cryptographic algorithms in C++.
 
-See [task board](https://app.gitkraken.com/glo/board/X1VWeSQxbQAR7JTn) for future updates and features.
-
 # Install
 
 ## Requirements
 
 Binaries:
 
-- A C++20 compiler (ex: g++-10)
-- CMake 3.16 or later
+- A C++20 compiler (ex: g++-13)
+- CMake 3.26 or later
 
 Libraries:
 
-- [core](https://github.com/arapelle/core) 0.13 or later
-- [Google Test](https://github.com/google/googletest) 1.10 or later (only for testing)
+- [arba-core](https://github.com/arapelle/arba-core) 0.14.0
+
+Testing Libraries (optional):
+
+- [Google Test](https://github.com/google/googletest) 1.13 or later  (optional)
 
 ## Clone
 
 ```
-git clone https://github.com/arapelle/seri --recurse-submodules
+git clone https://github.com/arapelle/arba-seri --recurse-submodules
 ```
 
 ## Quick Install
@@ -29,14 +30,14 @@ git clone https://github.com/arapelle/seri --recurse-submodules
 There is a cmake script at the root of the project which builds the library in *Release* mode and install it (default options are used).
 
 ```
-cd /path/to/seri
-cmake -P cmake_quick_install.cmake
+cd /path/to/arba-seri
+cmake -P cmake/scripts/quick_install.cmake
 ```
 
 Use the following to quickly install a different mode.
 
 ```
-cmake -DCMAKE_BUILD_TYPE=Debug -P cmake_quick_install.cmake
+cmake -P cmake/scripts/quick_install.cmake -- TESTS BUILD Debug DIR /tmp/local
 ```
 
 ## Uninstall
@@ -44,8 +45,8 @@ cmake -DCMAKE_BUILD_TYPE=Debug -P cmake_quick_install.cmake
 There is a uninstall cmake script created during installation. You can use it to uninstall properly this library.
 
 ```
-cd /path/to/installed-seri/
-cmake -P cmake_uninstall.cmake
+cd /path/to/installed-arba-seri/
+cmake -P uninstall.cmake
 ```
 
 # How to use
@@ -54,7 +55,7 @@ cmake -P cmake_uninstall.cmake
 
 ```c++
 #include <iostream>
-#include <seri/binary/io.hpp>
+#include <arba/seri/binary/io.hpp>
 
 int main()
 {
@@ -75,8 +76,8 @@ int main()
 ## Example - Serialize a polymorphic object
 
 ```c++
-#include <seri/polymorphism.hpp>
-#include <seri/binary/io.hpp>
+#include <arba/seri/polymorphism.hpp>
+#include <arba/seri/binary/io.hpp>
 #include <vector>
 #include <memory>
 #include <iostream>
@@ -139,10 +140,10 @@ int main()
 }
 ```
 
-## Example - Using *seri* in a CMake project
+## Example - Using *arba-seri* in a CMake project
 
-See the [basic cmake project](https://github.com/arapelle/seri/tree/master/example/basic_cmake_project) example, and more specifically the [CMakeLists.txt](https://github.com/arapelle/seri/tree/master/example/basic_cmake_project/CMakeLists.txt) to see how to use *wgen* in your CMake projects.
+See *basic_cmake_project* in example, and more specifically the *CMakeLists.txt* to see how to use *arba-seri* in your CMake projects.
 
 # License
 
-[MIT License](https://github.com/arapelle/seri/blob/master/LICENSE.md) © seri
+[MIT License](./LICENSE.md) © arba-seri

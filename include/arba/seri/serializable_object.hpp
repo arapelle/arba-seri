@@ -1,7 +1,10 @@
 #pragma once
 
+inline namespace arba
+{
 namespace seri
 {
+
 template <typename input_stream, typename type>
 concept input_serializable_object = requires(input_stream& stream, type& ref)
 {
@@ -13,4 +16,6 @@ concept output_serializable_object = requires(output_stream& stream, const type&
 {
     { cref.write_binary(stream) };
 };
+
+}
 }
