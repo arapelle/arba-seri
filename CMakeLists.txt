@@ -20,7 +20,7 @@ set(PROJECT_VERSION 0.4.0)
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
         DESCRIPTION "Portable serialization C++ library."
-        HOMEPAGE_URL "https://github.com/arapelle/seri"
+        HOMEPAGE_URL "https://github.com/arapelle/arba-seri"
         LANGUAGES CXX)
 message(STATUS "PROJECT : ${PROJECT_NAME} ${PROJECT_VERSION} ${CMAKE_BUILD_TYPE}")
 include(CTest)

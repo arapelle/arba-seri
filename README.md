@@ -13,7 +13,7 @@ Binaries:
 
 Libraries:
 
-- [core](https://github.com/arapelle/core) 0.14.0
+- [arba-core](https://github.com/arapelle/arba-core) 0.14.0
 
 Testing Libraries (optional):
 
@@ -140,10 +140,10 @@ int main()
 }
 ```
 
-## Example - Using *seri* in a CMake project
+## Example - Using *arba-seri* in a CMake project
 
-See *basic_cmake_project* in example, and more specifically the *CMakeLists.txt* to see how to use *seri* in your CMake projects.
+See *basic_cmake_project* in example, and more specifically the *CMakeLists.txt* to see how to use *arba-seri* in your CMake projects.
 
 # License
 
-[MIT License](./LICENSE.md) © seri
+[MIT License](./LICENSE.md) © arba-seri
