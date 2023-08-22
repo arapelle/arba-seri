@@ -35,7 +35,7 @@ public:
     unsigned number_of_edges;
 };
 
-SERI_DEFINE_SERIALIZABLE_TYPE_ID(Polygon, "2fbfe890-eefe-4b38-babc-6ca79931e131");
+ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID(Polygon, "2fbfe890-eefe-4b38-babc-6ca79931e131");
 
 class Colored_polygon : public Polygon
 {
@@ -63,9 +63,9 @@ public:
     std::string color;
 };
 
-SERI_DEFINE_SERIALIZABLE_TYPE_ID(Colored_polygon, "733f99fe-3881-4862-813a-5e3aab4a6957");
-SERI_REGISTER_INHERITANCE_RELATION(Object, Colored_polygon)
-SERI_REGISTER_INHERITANCE_RELATION(Polygon, Colored_polygon)
+ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID(Colored_polygon, "733f99fe-3881-4862-813a-5e3aab4a6957");
+ARBA_SERI_REGISTER_INHERITANCE_RELATION(Object, Colored_polygon)
+ARBA_SERI_REGISTER_INHERITANCE_RELATION(Polygon, Colored_polygon)
 
 class Text
 {
