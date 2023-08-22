@@ -16,7 +16,7 @@ set_build_type_ifndef()
 set(PROJECT_NAME "arba-seri")
 set(project_namespace "arba")
 set(project_base_name "seri")
-set(PROJECT_VERSION 0.4.0)
+set(PROJECT_VERSION 0.5.0)
 project(${PROJECT_NAME}
         VERSION ${PROJECT_VERSION}
         DESCRIPTION "Portable serialization C++ library."
