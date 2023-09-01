@@ -155,21 +155,16 @@ class inheritance_relation final : public inheritance_relation_base<base>
 
 // Helper macros:
 
-#define SERI_DEFINE_SERIALIZABLE_TYPE_ID(type, id) \
-    namespace seri \
-    { \
+#define ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID(type, id) \
     template <> \
-    inline constexpr bool has_serializable_type_id_v<type> = true; \
+inline constexpr bool ::arba::seri::has_serializable_type_id_v<type> = true; \
     template <> \
-    const uutid& serializable_type_id<type>() { static const uutid uid(id); return uid; } \
-    template class inheritance_relation<type, type>; \
-    }
+    const ::arba::seri::uutid& ::arba::seri::serializable_type_id<type>() \
+    { static const ::arba::seri::uutid uid(id); return uid; } \
+    template class ::arba::seri::inheritance_relation<type, type>;
 
-#define SERI_REGISTER_INHERITANCE_RELATION(base, derived) \
-    namespace seri \
-    { \
-    template class inheritance_relation<base, derived>; \
-    }
+#define ARBA_SERI_REGISTER_INHERITANCE_RELATION(base, derived) \
+template class ::arba::seri::inheritance_relation<base, derived>;
 
 // Helper make functions:
 
