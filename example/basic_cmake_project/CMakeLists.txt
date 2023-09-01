@@ -5,7 +5,7 @@ project(basic_cmake_project)
 add_executable(${PROJECT_NAME} main.cpp)
 add_executable(${PROJECT_NAME}-static main.cpp)
 # Find package arba-seri:
-find_package(arba-seri 0.5.0 CONFIG REQUIRED)
+find_package(arba-seri 0.6.0 CONFIG REQUIRED)
 # Use arba-seri release shared target:
 target_link_libraries(${PROJECT_NAME} PRIVATE arba-seri)
 # Use arba-seri release static target:
