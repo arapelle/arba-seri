@@ -1,6 +1,6 @@
 #pragma once
 
-#include <arba/core/uuid.hpp>
+#include <arba/uuid/uuid.hpp>
 #include <sstream>
 #include <string>
 #include <typeindex>
@@ -15,7 +15,7 @@ namespace seri
 /**
  * \brief Universal Unique Type ID
  */
-using uutid = core::uuid;
+using uutid = uuid::uuid;
 
 // Constant to specialize for each polymorphic serializable type (cf. Helper macros):
 
@@ -155,16 +155,28 @@ class inheritance_relation final : public inheritance_relation_base<base>
 
 // Helper macros:
 
-#define ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID(type, id) \
+#define ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID(type_, id_) \
     template <> \
-inline constexpr bool ::arba::seri::has_serializable_type_id_v<type> = true; \
+inline constexpr bool ::arba::seri::has_serializable_type_id_v<type_> = true; \
     template <> \
-    const ::arba::seri::uutid& ::arba::seri::serializable_type_id<type>() \
-    { static const ::arba::seri::uutid uid(id); return uid; } \
-    template class ::arba::seri::inheritance_relation<type, type>;
+    const ::arba::seri::uutid& ::arba::seri::serializable_type_id<type_>() \
+    { static const ::arba::seri::uutid uid(id_); return uid; } \
+    template class ::arba::seri::inheritance_relation<type_, type_>
 
 #define ARBA_SERI_REGISTER_INHERITANCE_RELATION(base, derived) \
-template class ::arba::seri::inheritance_relation<base, derived>;
+template class ::arba::seri::inheritance_relation<base, derived>
+
+#ifndef SERI_DEFINE_SERIALIZABLE_TYPE_ID
+#define SERI_DEFINE_SERIALIZABLE_TYPE_ID(type_, id_) ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID(type_, id_)
+#elif not defined(NDEBUG) && (defined(__GNUC__) || defined(__GNUG__) || defined(_MSC_VER) || defined(__clang__))
+#pragma message "SERI_DEFINE_SERIALIZABLE_TYPE_ID already exists. You must use ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID."
+#endif
+
+#ifndef SERI_REGISTER_INHERITANCE_RELATION
+#define SERI_REGISTER_INHERITANCE_RELATION(base_, derived_) ARBA_SERI_REGISTER_INHERITANCE_RELATION(base_, derived_)
+#elif not defined(NDEBUG) && (defined(__GNUC__) || defined(__GNUG__) || defined(_MSC_VER) || defined(__clang__))
+#pragma message "SERI_REGISTER_INHERITANCE_RELATION already exists. You must use ARBA_SERI_REGISTER_INHERITANCE_RELATION."
+#endif
 
 // Helper make functions:
 

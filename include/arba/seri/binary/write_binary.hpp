@@ -2,8 +2,8 @@
 
 #include <arba/seri/polymorphism.hpp>
 #include <arba/seri/serializable_object.hpp>
-#include <arba/core/uuid.hpp>
-#include <arba/core/htow.hpp>
+#include <arba/uuid/uuid.hpp>
+#include <arba/core/bit/htow.hpp>
 #include <array>
 #include <sstream>
 #include <cstdint>
@@ -31,7 +31,7 @@ inline output_stream& write_binary(output_stream& stream, const range_type& rang
 
 // 7
 template <typename output_stream>
-output_stream& write_binary(output_stream& stream, const core::uuid& value);
+output_stream& write_binary(output_stream& stream, const uuid::uuid& value);
 
 // 8
 template <typename output_stream, typename type>
@@ -63,7 +63,7 @@ output_stream& write_binary(output_stream& stream, const std::shared_ptr<type>& 
 //-----
 
 // 1
-template <typename output_stream, core::byte_swappable T>
+template <typename output_stream, core::ByteSwappable T>
 inline output_stream& write_binary(output_stream& stream, T value)
 {
     value = core::htow(value);
@@ -122,7 +122,7 @@ inline output_stream& write_binary(output_stream& stream, const range_type& rang
 
 // 7
 template <typename output_stream>
-output_stream& write_binary(output_stream& stream, const core::uuid& value)
+output_stream& write_binary(output_stream& stream, const uuid::uuid& value)
 {
     write_binary(stream, value.data());
     return stream;

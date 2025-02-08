@@ -2,7 +2,7 @@
 
 #include <arba/seri/polymorphism.hpp>
 #include <arba/seri/serializable_object.hpp>
-#include <arba/core/htow.hpp>
+#include <arba/core/bit/htow.hpp>
 #include <istream>
 #include <ostream>
 #include <ranges>
@@ -60,7 +60,7 @@ inline input_stream& read_binary(input_stream& stream, range_type& range);
 
 // 9
 template <typename input_stream>
-inline input_stream& read_binary(input_stream& stream, core::uuid& value);
+inline input_stream& read_binary(input_stream& stream, uuid::uuid& value);
 
 // 10
 template <typename input_stream, typename type>
@@ -92,7 +92,7 @@ inline input_stream& read_binary(input_stream& stream, std::shared_ptr<type>& va
 //-----
 
 // 1
-template <typename input_stream, core::byte_swappable T>
+template <typename input_stream, core::ByteSwappable T>
 inline input_stream& read_binary(input_stream& stream, T& value)
 {
     read_bytes(stream, reinterpret_cast<char*>(&value), sizeof(value));
@@ -137,7 +137,6 @@ inline input_stream& read_binary(input_stream& stream, std::pair<first_type, sec
 template <typename input_stream, typename value_type, std::size_t N>
 inline input_stream& read_binary(input_stream& stream, std::array<value_type, N>& range)
 {
-    uint64_t range_size = range.size();
     for (auto& value : range)
         read_binary(stream, value);
     return stream;
@@ -232,7 +231,7 @@ inline input_stream& read_binary(input_stream& stream, range_type& range)
 
 // 9
 template <typename input_stream>
-inline input_stream& read_binary(input_stream& stream, core::uuid& value)
+inline input_stream& read_binary(input_stream& stream, uuid::uuid& value)
 {
     read_binary(stream, value.data());
     return stream;

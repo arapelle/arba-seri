@@ -41,7 +41,7 @@ TEST(binary_signed_integral_tests, test_read_write_ei8)
 
 TEST(binary_signed_integral_tests, test_read_write_i16)
 {
-    int16_t value = 0xaabb;
+    int16_t value = 0x7a8b;
     int16_t stream_value = 0;
     std::stringstream stream(std::ios::binary|std::ios::in|std::ios::out);
     seri::write_binary(stream, value);
