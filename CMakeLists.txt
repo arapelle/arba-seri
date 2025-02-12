@@ -38,11 +38,11 @@ configure_headers(configured_headers
 
 ## Headers:
 set(headers
+    include/arba/seri/binary/binary_serializable.hpp
     include/arba/seri/binary/io.hpp
     include/arba/seri/binary/read_binary.hpp
     include/arba/seri/binary/write_binary.hpp
     include/arba/seri/polymorphism.hpp
-    include/arba/seri/serializable_object.hpp
 )
 
 ## Sources:
