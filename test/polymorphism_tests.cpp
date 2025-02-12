@@ -1,8 +1,10 @@
 #include "classes.hpp"
 #include <arba/seri/polymorphism.hpp>
+
 #include <gtest/gtest.h>
-#include <sstream>
+
 #include <cstdlib>
+#include <sstream>
 
 TEST(polymorphism_tests, test_make_unique)
 {

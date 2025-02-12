@@ -1,8 +1,10 @@
 #pragma once
 
-#include <arba/seri/polymorphism.hpp>
 #include <arba/seri/binary/binary_serializable.hpp>
+#include <arba/seri/polymorphism.hpp>
+
 #include <arba/core/bit/htow.hpp>
+
 #include <istream>
 #include <ostream>
 #include <ranges>
@@ -18,7 +20,7 @@ std::istream& read_bytes(std::istream& stream, void* buffer, std::size_t number_
 
 // 4
 template <typename InputStream, typename FirstType, typename SecondType>
-requires (!std::is_const_v<FirstType>) && (!std::is_const_v<SecondType>)
+    requires(!std::is_const_v<FirstType>) && (!std::is_const_v<SecondType>)
 inline InputStream& read_binary(InputStream& stream, std::pair<FirstType, SecondType>& value);
 
 // 5
@@ -27,19 +29,17 @@ inline InputStream& read_binary(InputStream& stream, std::array<ValueType, N>& r
 
 // 6
 template <typename InputStream, std::ranges::range RangeType>
-requires requires(RangeType& range, std::ranges::range_value_t<RangeType>&& rvalue)
-{
-    { range.push_back(rvalue) };
-}
+    requires requires(RangeType& range, std::ranges::range_value_t<RangeType>&& rvalue) {
+        { range.push_back(rvalue) };
+    }
 inline InputStream& read_binary(InputStream& stream, RangeType& range);
 
 // 7
 template <typename InputStream, std::ranges::range RangeType>
-requires requires(InputStream& stream, RangeType& range, std::ranges::range_value_t<RangeType> value)
-{
-    { read_binary(stream, value) };
-    { range.insert(std::move(value)) };
-}
+    requires requires(InputStream& stream, RangeType& range, std::ranges::range_value_t<RangeType> value) {
+        { read_binary(stream, value) };
+        { range.insert(std::move(value)) };
+    }
 inline InputStream& read_binary(InputStream& stream, RangeType& range);
 
 // 8
@@ -64,29 +64,29 @@ inline InputStream& read_binary(InputStream& stream, uuid::uuid& value);
 
 // 10
 template <typename InputStream, typename Type>
-requires InputBinarySerializable<InputStream, Type>
+    requires InputBinarySerializable<InputStream, Type>
 inline InputStream& read_binary(InputStream& stream, Type& value);
 
 // 11
 template <typename InputStream, typename Type>
-requires (AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
-&& InputBinarySerializable<InputStream, Type>
+    requires(AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
+            && InputBinarySerializable<InputStream, Type>
 inline InputStream& read_binary(InputStream& stream, std::unique_ptr<Type>& value);
 
 // 12
 template <typename InputStream, typename Type>
-requires (!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
+    requires(!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
 inline InputStream& read_binary(InputStream& stream, std::unique_ptr<Type>& value);
 
 // 13
 template <typename InputStream, typename Type>
-requires (AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
-&& InputBinarySerializable<InputStream, Type>
+    requires(AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
+            && InputBinarySerializable<InputStream, Type>
 inline InputStream& read_binary(InputStream& stream, std::shared_ptr<Type>& value);
 
 // 14
 template <typename InputStream, typename Type>
-requires (!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
+    requires(!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
 inline InputStream& read_binary(InputStream& stream, std::shared_ptr<Type>& value);
 
 //-----
@@ -102,7 +102,7 @@ inline InputStream& read_binary(InputStream& stream, Type& value)
 
 // 2
 template <typename InputStream, typename Type>
-requires (sizeof(Type) == 1) && (std::is_convertible_v<uint8_t, Type> || std::is_enum_v<Type>)
+    requires(sizeof(Type) == 1) && (std::is_convertible_v<uint8_t, Type> || std::is_enum_v<Type>)
 inline InputStream& read_binary(InputStream& stream, Type& value)
 {
     uint8_t byte;
@@ -113,7 +113,7 @@ inline InputStream& read_binary(InputStream& stream, Type& value)
 
 // 3
 template <typename InputStream, typename Type>
-requires (sizeof(Type) == 1) && (std::is_convertible_v<uint8_t, Type> || std::is_enum_v<Type>)
+    requires(sizeof(Type) == 1) && (std::is_convertible_v<uint8_t, Type> || std::is_enum_v<Type>)
 inline InputStream& read_binary(InputStream& stream, std::basic_string<Type>& value)
 {
     uint64_t str_size = 0;
@@ -125,7 +125,7 @@ inline InputStream& read_binary(InputStream& stream, std::basic_string<Type>& va
 
 // 4
 template <typename InputStream, typename FirstType, typename SecondType>
-requires (!std::is_const_v<FirstType>) && (!std::is_const_v<SecondType>)
+    requires(!std::is_const_v<FirstType>) && (!std::is_const_v<SecondType>)
 inline InputStream& read_binary(InputStream& stream, std::pair<FirstType, SecondType>& value)
 {
     read_binary(stream, value.first);
@@ -147,19 +147,17 @@ template <typename Type>
 inline constexpr bool is_reservable_range_v = false;
 
 template <std::ranges::range RangeType>
-requires requires(RangeType& range, uint64_t size)
-{
-    { range.reserve(size) };
-}
+    requires requires(RangeType& range, uint64_t size) {
+        { range.reserve(size) };
+    }
 inline constexpr bool is_reservable_range_v<RangeType> = true;
 //-
 
 // 6
 template <typename InputStream, std::ranges::range RangeType>
-requires requires(RangeType& range, std::ranges::range_value_t<RangeType>&& rvalue)
-{
-    { range.push_back(rvalue) };
-}
+    requires requires(RangeType& range, std::ranges::range_value_t<RangeType>&& rvalue) {
+        { range.push_back(rvalue) };
+    }
 inline InputStream& read_binary(InputStream& stream, RangeType& range)
 {
     uint64_t range_size = 0;
@@ -178,11 +176,10 @@ inline InputStream& read_binary(InputStream& stream, RangeType& range)
 
 // 7
 template <typename InputStream, std::ranges::range RangeType>
-requires requires(InputStream& stream, RangeType& range, std::ranges::range_value_t<RangeType> value)
-{
-    { read_binary(stream, value) };
-    { range.insert(std::move(value)) };
-}
+    requires requires(InputStream& stream, RangeType& range, std::ranges::range_value_t<RangeType> value) {
+        { read_binary(stream, value) };
+        { range.insert(std::move(value)) };
+    }
 inline InputStream& read_binary(InputStream& stream, RangeType& range)
 {
     uint64_t range_size = 0;
@@ -241,7 +238,7 @@ inline InputStream& read_binary(InputStream& stream, uuid::uuid& value)
 
 // 10
 template <typename InputStream, typename Type>
-requires InputBinarySerializable<InputStream, Type>
+    requires InputBinarySerializable<InputStream, Type>
 inline InputStream& read_binary(InputStream& stream, Type& value)
 {
     value.read_binary(stream);
@@ -252,8 +249,8 @@ inline InputStream& read_binary(InputStream& stream, Type& value)
 
 // 11
 template <typename InputStream, typename Type>
-requires (AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
-&& InputBinarySerializable<InputStream, Type>
+    requires(AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
+            && InputBinarySerializable<InputStream, Type>
 inline InputStream& read_binary(InputStream& stream, std::unique_ptr<Type>& value)
 {
     uutid type_id;
@@ -270,7 +267,7 @@ inline InputStream& read_binary(InputStream& stream, std::unique_ptr<Type>& valu
 
 // 12
 template <typename InputStream, typename Type>
-requires (!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
+    requires(!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
 inline InputStream& read_binary(InputStream& stream, std::unique_ptr<Type>& value)
 {
     bool ptr_is_not_null;
@@ -287,8 +284,8 @@ inline InputStream& read_binary(InputStream& stream, std::unique_ptr<Type>& valu
 
 // 13
 template <typename InputStream, typename Type>
-requires (AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
-&& InputBinarySerializable<InputStream, Type>
+    requires(AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
+            && InputBinarySerializable<InputStream, Type>
 inline InputStream& read_binary(InputStream& stream, std::shared_ptr<Type>& value)
 {
     uutid type_id;
@@ -305,7 +302,7 @@ inline InputStream& read_binary(InputStream& stream, std::shared_ptr<Type>& valu
 
 // 14
 template <typename InputStream, typename Type>
-requires (!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
+    requires(!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
 inline InputStream& read_binary(InputStream& stream, std::shared_ptr<Type>& value)
 {
     bool ptr_is_not_null;
@@ -320,5 +317,5 @@ inline InputStream& read_binary(InputStream& stream, std::shared_ptr<Type>& valu
     return stream;
 }
 
-}
-}
+} // namespace seri
+} // namespace arba

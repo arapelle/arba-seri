@@ -1,6 +1,7 @@
 #pragma once
 
 #include <arba/seri/binary/io.hpp>
+
 #include <string_view>
 
 class Object
@@ -20,15 +21,9 @@ public:
     virtual ~Polygon() override {}
     virtual std::string_view name() const override { return "Polygon"; }
 
-    virtual void write_binary(std::ostream& stream) const override
-    {
-        seri::write_binary(stream, number_of_edges);
-    }
+    virtual void write_binary(std::ostream& stream) const override { seri::write_binary(stream, number_of_edges); }
 
-    virtual void read_binary(std::istream& stream) override
-    {
-        seri::read_binary(stream, number_of_edges);
-    }
+    virtual void read_binary(std::istream& stream) override { seri::read_binary(stream, number_of_edges); }
 
     auto operator<=>(const Polygon&) const = default;
 
@@ -40,9 +35,9 @@ ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID(Polygon, "2fbfe890-eefe-4b38-babc-6ca79931
 class Colored_polygon : public Polygon
 {
 public:
-    Colored_polygon(unsigned number_of_edges = 0, std::string color = "black")
-        : Polygon(number_of_edges), color(color)
-    {}
+    Colored_polygon(unsigned number_of_edges = 0, std::string color = "black") : Polygon(number_of_edges), color(color)
+    {
+    }
     virtual ~Colored_polygon() override {}
     virtual std::string_view name() const override { return "Colored_polygon"; }
 
@@ -72,15 +67,9 @@ class Text
 public:
     Text(const std::string& text = "") : text(text) {}
 
-    void write_binary(std::ostream& stream) const
-    {
-        seri::write_binary(stream, text);
-    }
+    void write_binary(std::ostream& stream) const { seri::write_binary(stream, text); }
 
-    void read_binary(std::istream& stream)
-    {
-        seri::read_binary(stream, text);
-    }
+    void read_binary(std::istream& stream) { seri::read_binary(stream, text); }
 
     auto operator<=>(const Text&) const = default;
 

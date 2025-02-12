@@ -1,12 +1,14 @@
 #pragma once
 
-#include <arba/seri/polymorphism.hpp>
 #include <arba/seri/binary/binary_serializable.hpp>
-#include <arba/uuid/uuid.hpp>
+#include <arba/seri/polymorphism.hpp>
+
 #include <arba/core/bit/htow.hpp>
+#include <arba/uuid/uuid.hpp>
+
 #include <array>
-#include <sstream>
 #include <cstdint>
+#include <sstream>
 
 inline namespace arba
 {
@@ -35,29 +37,29 @@ OutputStream& write_binary(OutputStream& stream, const uuid::uuid& value);
 
 // 8
 template <typename OutputStream, typename Type>
-requires OutputBinarySerializable<OutputStream, Type>
+    requires OutputBinarySerializable<OutputStream, Type>
 OutputStream& write_binary(OutputStream& stream, const Type& value);
 
 // 9
 template <typename OutputStream, typename Type>
-requires (AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
-&& OutputBinarySerializable<OutputStream, Type>
+    requires(AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
+            && OutputBinarySerializable<OutputStream, Type>
 OutputStream& write_binary(OutputStream& stream, const std::unique_ptr<Type>& value);
 
 // 10
 template <typename OutputStream, typename Type>
-requires (!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
+    requires(!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
 OutputStream& write_binary(OutputStream& stream, const std::unique_ptr<Type>& value);
 
 // 11
 template <typename OutputStream, typename Type>
-requires (AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
-&& OutputBinarySerializable<OutputStream, Type>
+    requires(AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
+            && OutputBinarySerializable<OutputStream, Type>
 OutputStream& write_binary(OutputStream& stream, const std::shared_ptr<Type>& value);
 
 // 12
 template <typename OutputStream, typename Type>
-requires (!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
+    requires(!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
 OutputStream& write_binary(OutputStream& stream, const std::shared_ptr<Type>& value);
 
 //-----
@@ -73,7 +75,7 @@ inline OutputStream& write_binary(OutputStream& stream, Type value)
 
 // 2
 template <typename OutputStream, typename Type>
-requires (sizeof(Type) == 1) && (std::is_convertible_v<Type, uint8_t> || std::is_enum_v<Type>)
+    requires(sizeof(Type) == 1) && (std::is_convertible_v<Type, uint8_t> || std::is_enum_v<Type>)
 inline OutputStream& write_binary(OutputStream& stream, const Type& value)
 {
     write_bytes(stream, reinterpret_cast<const char*>(&value), 1);
@@ -82,7 +84,7 @@ inline OutputStream& write_binary(OutputStream& stream, const Type& value)
 
 // 3
 template <typename OutputStream, typename Type>
-requires (sizeof(Type) == 1) && (std::is_convertible_v<uint8_t, Type> || std::is_enum_v<Type>)
+    requires(sizeof(Type) == 1) && (std::is_convertible_v<uint8_t, Type> || std::is_enum_v<Type>)
 inline OutputStream& write_binary(OutputStream& stream, const std::basic_string<Type>& value)
 {
     uint64_t str_size = value.length();
@@ -132,7 +134,7 @@ OutputStream& write_binary(OutputStream& stream, const uuid::uuid& value)
 
 // 8
 template <typename OutputStream, typename Type>
-requires OutputBinarySerializable<OutputStream, Type>
+    requires OutputBinarySerializable<OutputStream, Type>
 OutputStream& write_binary(OutputStream& stream, const Type& value)
 {
     value.write_binary(stream);
@@ -143,8 +145,8 @@ OutputStream& write_binary(OutputStream& stream, const Type& value)
 
 // 9
 template <typename OutputStream, typename Type>
-requires (AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
-&& OutputBinarySerializable<OutputStream, Type>
+    requires(AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
+            && OutputBinarySerializable<OutputStream, Type>
 OutputStream& write_binary(OutputStream& stream, const std::unique_ptr<Type>& value)
 {
     if (value)
@@ -160,7 +162,7 @@ OutputStream& write_binary(OutputStream& stream, const std::unique_ptr<Type>& va
 
 // 10
 template <typename OutputStream, typename Type>
-requires (!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
+    requires(!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
 OutputStream& write_binary(OutputStream& stream, const std::unique_ptr<Type>& value)
 {
     write_binary(stream, static_cast<bool>(value));
@@ -171,8 +173,8 @@ OutputStream& write_binary(OutputStream& stream, const std::unique_ptr<Type>& va
 
 // 11
 template <typename OutputStream, typename Type>
-requires (AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
-&& OutputBinarySerializable<OutputStream, Type>
+    requires(AbstractPolymorphicSerializable<Type> || ConcretePolymorphicSerializable<Type>)
+            && OutputBinarySerializable<OutputStream, Type>
 OutputStream& write_binary(OutputStream& stream, const std::shared_ptr<Type>& value)
 {
     if (value)
@@ -188,7 +190,7 @@ OutputStream& write_binary(OutputStream& stream, const std::shared_ptr<Type>& va
 
 // 12
 template <typename OutputStream, typename Type>
-requires (!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
+    requires(!AbstractPolymorphicSerializable<Type> && !ConcretePolymorphicSerializable<Type>)
 OutputStream& write_binary(OutputStream& stream, const std::shared_ptr<Type>& value)
 {
     write_binary(stream, static_cast<bool>(value));
@@ -197,5 +199,5 @@ OutputStream& write_binary(OutputStream& stream, const std::shared_ptr<Type>& va
     return stream;
 }
 
-}
-}
+} // namespace seri
+} // namespace arba

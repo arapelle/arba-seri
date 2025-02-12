@@ -1,8 +1,9 @@
-#include <arba/seri/polymorphism.hpp>
 #include <arba/seri/binary/io.hpp>
-#include <vector>
-#include <memory>
+#include <arba/seri/polymorphism.hpp>
+
 #include <iostream>
+#include <memory>
+#include <vector>
 
 class Abstract
 {
@@ -20,15 +21,9 @@ public:
     virtual ~Cube() = default;
     virtual void print() const override { std::cout << "Cube_" << size << std::endl; }
 
-    virtual std::ostream& write_binary(std::ostream& stream) const override
-    {
-        return seri::write_binary(stream, size);
-    }
+    virtual std::ostream& write_binary(std::ostream& stream) const override { return seri::write_binary(stream, size); }
 
-    virtual std::istream& read_binary(std::istream& stream) override
-    {
-        return seri::read_binary(stream, size);
-    }
+    virtual std::istream& read_binary(std::istream& stream) override { return seri::read_binary(stream, size); }
 
     unsigned size;
 };
@@ -48,7 +43,7 @@ int main()
         thing_ptr->print();
     std::cout << ".\n" << std::endl;
 
-    std::stringstream stream(std::ios::binary|std::ios::in|std::ios::out);
+    std::stringstream stream(std::ios::binary | std::ios::in | std::ios::out);
     seri::write_binary(stream, things);
     seri::read_binary(stream, other_things);
 
