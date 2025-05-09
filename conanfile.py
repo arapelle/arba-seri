@@ -56,8 +56,8 @@ class ArbaSeriRecipe(ConanFile):
         check_min_cppstd(self, 20)
     
     def requirements(self):
-        self.requires("arba-uuid/[^0.2]", transitive_headers=True, transitive_libs=True)
-        self.requires("arba-core/[^0.29]", transitive_headers=True, transitive_libs=True)
+        self.requires("arba-uuid/[^0.3]", transitive_headers=True, transitive_libs=True)
+        self.requires("arba-core/[^0.30]", transitive_headers=True, transitive_libs=True)
 
     def build_requirements(self):
         self.test_requires("gtest/[^1.14]")
