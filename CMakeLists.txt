@@ -73,8 +73,8 @@ add_cpp_library(${PROJECT_TARGET_NAME} ${${PROJECT_UPPER_VAR_NAME}_LIBRARY_TYPE}
 add_library("${PROJECT_NAMESPACE}::${PROJECT_FEATURE_NAME}${LIBRARY_TYPE_POSTFIX}" ALIAS ${PROJECT_TARGET_NAME})
 
 ## Link C++ targets:
-find_package(arba-core 0.29.0 REQUIRED CONFIG)
-find_package(arba-uuid 0.2.0 REQUIRED CONFIG)
+find_package(arba-core 0.30.0 REQUIRED CONFIG)
+find_package(arba-uuid 0.3.0 REQUIRED CONFIG)
 target_link_libraries(${PROJECT_TARGET_NAME}
     PUBLIC
         arba::core
