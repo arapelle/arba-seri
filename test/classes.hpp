@@ -17,7 +17,7 @@ public:
 class Polygon : public Object
 {
 public:
-    Polygon(unsigned number_of_edges = 0) : number_of_edges(number_of_edges) {}
+    Polygon(unsigned nb_edges = 0) : number_of_edges(nb_edges) {}
     virtual ~Polygon() override {}
     virtual std::string_view name() const override { return "Polygon"; }
 
@@ -35,7 +35,7 @@ ARBA_SERI_DEFINE_SERIALIZABLE_TYPE_ID(Polygon, "2fbfe890-eefe-4b38-babc-6ca79931
 class Colored_polygon : public Polygon
 {
 public:
-    Colored_polygon(unsigned number_of_edges = 0, std::string color = "black") : Polygon(number_of_edges), color(color)
+    Colored_polygon(unsigned nb_edges = 0, std::string input_color = "black") : Polygon(nb_edges), color(input_color)
     {
     }
     virtual ~Colored_polygon() override {}
@@ -65,7 +65,7 @@ ARBA_SERI_REGISTER_INHERITANCE_RELATION(Polygon, Colored_polygon);
 class Text
 {
 public:
-    Text(const std::string& text = "") : text(text) {}
+    Text(const std::string& input_text = "") : text(input_text) {}
 
     void write_binary(std::ostream& stream) const { seri::write_binary(stream, text); }
 

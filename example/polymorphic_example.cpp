@@ -17,7 +17,7 @@ public:
 class Cube : public Abstract
 {
 public:
-    Cube(unsigned size = 0) : size(size) {}
+    Cube(unsigned input_size = 0) : size(input_size) {}
     virtual ~Cube() = default;
     virtual void print() const override { std::cout << "Cube_" << size << std::endl; }
 
